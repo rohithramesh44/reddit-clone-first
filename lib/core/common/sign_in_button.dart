@@ -7,8 +7,8 @@ import 'package:reddit_clone/theme/pallete.dart';
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
 
-  void signInWithGoogle(WidgetRef ref) {
-    ref.read(authControllerProvider).signInWithGoogle();
+  void signInWithGoogle(context, WidgetRef ref) {
+    ref.read(authControllerProvider).signInWithGoogle(context);
   }
 
   @override
@@ -16,7 +16,7 @@ class SignInButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ElevatedButton.icon(
-        onPressed: () => signInWithGoogle(ref),
+        onPressed: () => signInWithGoogle(context, ref),
         icon: Image.asset(
           Constant.googlePath,
           width: 34,

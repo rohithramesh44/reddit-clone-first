@@ -52,6 +52,20 @@ class UserModel {
     };
   }
 
+  //**********data class generator version different */
+  // factory UserModel.fromMap(Map<String, dynamic> map) {
+  //   return UserModel(
+  //     name: map['name'] as String,
+  //     profilePic: map['profilePic'] as String,
+  //     banner: map['banner'] as String,
+  //     uid: map['uid'] as String,
+  //     isAuthenticated: map['isAuthenticated'] as bool,
+  //     karma: map['karma'] as int,
+  //     awards: List<String>.from(
+  //       (map['awards'] as List<String>),
+  //     ),
+  //   );
+  // }
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       name: map['name'] as String,
@@ -60,9 +74,7 @@ class UserModel {
       uid: map['uid'] as String,
       isAuthenticated: map['isAuthenticated'] as bool,
       karma: map['karma'] as int,
-      awards: List<String>.from(
-        (map['awards'] as List<String>),
-      ),
+      awards: List<String>.from(map['awards']),
     );
   }
 
