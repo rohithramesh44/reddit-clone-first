@@ -7,6 +7,11 @@ import 'package:reddit_clone/feature/community/repository/community_repository.d
 import 'package:reddit_clone/model/community_model.dart';
 import 'package:routemaster/routemaster.dart';
 
+final userCommunitiesProvider = StreamProvider((ref) {
+  final communityController = ref.watch(communityControllerProvider.notifier);
+  return communityController.getUserCommunity();
+});
+
 final communityControllerProvider =
     StateNotifierProvider<CommunityController, bool>((ref) {
   final communityRepository = ref.read(communityRepositoryProvider);
@@ -18,7 +23,7 @@ final communityControllerProvider =
 
 class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
-  Ref _ref;
+  final Ref _ref;
   CommunityController(
       {required CommunityRepository communitiyRepository, required Ref ref})
       : _communityRepository = communitiyRepository,
@@ -42,5 +47,10 @@ class CommunityController extends StateNotifier<bool> {
       showSnackBar(context, 'Community created successfully');
       Routemaster.of(context).pop();
     });
+  }
+
+  Stream<List<Community>> getUserCommunity() {
+    final uid = _ref.read(userProvider)!.uid;
+    return _communityRepository.getUserCommunities(uid);
   }
 }
