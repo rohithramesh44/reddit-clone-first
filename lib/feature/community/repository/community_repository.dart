@@ -39,9 +39,14 @@ class CommunityRepository {
       for (var doc in event.docs) {
         community.add(Community.fromMap(doc.data() as Map<String, dynamic>));
       }
-      print('------------$community');
+
       return community;
     });
+  }
+
+  Stream<Community> getCommunityByName(String name) {
+    return _communities.doc(name).snapshots().map(
+        (event) => Community.fromMap(event.data() as Map<String, dynamic>));
   }
 
   CollectionReference get _communities =>
