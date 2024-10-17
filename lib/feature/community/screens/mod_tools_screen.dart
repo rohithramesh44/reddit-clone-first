@@ -13,6 +13,12 @@ class ModToolsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: () {},
+            child: const Text('Save'),
+          )
+        ],
         title: const Text('Mod Tools'),
       ),
       body: Column(
