@@ -4,6 +4,7 @@ import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:reddit_clone/core/common/loader.dart';
 import 'package:reddit_clone/feature/auth/controller/auth_controller.dart';
 import 'package:reddit_clone/feature/community/controller/community_controller.dart';
+import 'package:reddit_clone/model/community_model.dart';
 import 'package:routemaster/routemaster.dart';
 
 class CommunityScreen extends ConsumerWidget {
@@ -14,12 +15,18 @@ class CommunityScreen extends ConsumerWidget {
     Routemaster.of(context).push('/mod-tools/$name');
   }
 
+  void joinCommunity(BuildContext context, WidgetRef ref, Community community) {
+    ref
+        .read(communityControllerProvider.notifier)
+        .joinCommunity(community, context);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(
-          data: (data) => NestedScrollView(
+          data: (community) => NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return [
                     SliverAppBar(
@@ -28,7 +35,8 @@ class CommunityScreen extends ConsumerWidget {
                       expandedHeight: 150,
                       flexibleSpace: Stack(
                         children: [
-                          Positioned.fill(child: Image.network(data.banner))
+                          Positioned.fill(
+                              child: Image.network(community.banner))
                         ],
                       ),
                     ),
@@ -40,7 +48,7 @@ class CommunityScreen extends ConsumerWidget {
                             Align(
                               alignment: Alignment.topLeft,
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage(data.avatar),
+                                backgroundImage: NetworkImage(community.avatar),
                                 radius: 35.0,
                               ),
                             ),
@@ -51,12 +59,12 @@ class CommunityScreen extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'r/${data.name}',
+                                  'r/${community.name}',
                                   style: const TextStyle(
                                       fontSize: 19,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                data.mods.contains(user.uid)
+                                community.mods.contains(user.uid)
                                     ? OutlinedButton(
                                         onPressed: () {
                                           navigateToModTools(context);
@@ -72,7 +80,8 @@ class CommunityScreen extends ConsumerWidget {
                                         child: const Text('Mod Tools'),
                                       )
                                     : OutlinedButton(
-                                        onPressed: () {},
+                                        onPressed: () => joinCommunity(
+                                            context, ref, community),
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -82,15 +91,16 @@ class CommunityScreen extends ConsumerWidget {
                                               horizontal: 35),
                                         ),
                                         child: Text(
-                                            data.member.contains(user.uid)
-                                                ? 'Joined'
+                                            community.member.contains(user.uid)
+                                                ? 'Leave'
                                                 : 'Join'),
                                       ),
                               ],
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
-                              child: Text('${data.member.length} memebers'),
+                              child:
+                                  Text('${community.member.length} memebers'),
                             ),
                           ],
                         ),
