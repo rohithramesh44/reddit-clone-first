@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit_clone/feature/auth/screens/login_screen.dart';
+import 'package:reddit_clone/feature/community/screens/add_mods_screen.dart';
 import 'package:reddit_clone/feature/community/screens/community_screen.dart';
 import 'package:reddit_clone/feature/community/screens/create_community_screen.dart';
 import 'package:reddit_clone/feature/community/screens/edit_commnunity_screen.dart';
@@ -24,6 +25,8 @@ final loggedInRoute = RouteMap(
     '/mod-tools/:name': (routeData) => MaterialPage(
         child: ModToolsScreen(name: routeData.pathParameters['name']!)),
     '/edit-community/:name': (routeData) => MaterialPage(
-        child: EditCommunityScreen(name: routeData.pathParameters['name']!))
+        child: EditCommunityScreen(name: routeData.pathParameters['name']!)),
+    '/add-mods/:name': (routeData) => MaterialPage(
+        child: AddModsScreen(name: routeData.pathParameters['name']!)),
   },
 );

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -125,6 +126,13 @@ class CommunityController extends StateNotifier<bool> {
     }
     final res = await _communityRepository.editCommunity(community);
     state = false;
+    res.fold((l) => showSnackBar(context, l.message),
+        (r) => Routemaster.of(context).pop());
+  }
+
+  void addMods(
+      String communityName, List<String> uids, BuildContext context) async {
+    final res = await _communityRepository.addMods(communityName, uids);
     res.fold((l) => showSnackBar(context, l.message),
         (r) => Routemaster.of(context).pop());
   }

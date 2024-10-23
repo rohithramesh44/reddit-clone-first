@@ -83,6 +83,16 @@ class CommunityRepository {
     }
   }
 
+  FutureVoid addMods(String communityName, List<String> uids) async {
+    try {
+      return right(_communities.doc(communityName).update({'mods': uids}));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   Stream<List<Community>> searchCommunity(String query) {
     return _communities
         .where('name',
