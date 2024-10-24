@@ -107,8 +107,6 @@ class CommunityController extends StateNotifier<bool> {
     state = true;
     // communities/profile/profile.jpg
     if (profileFile != null) {
-      print(
-          'profile file not null 00000000000009999999999999((((((((((((((((()))))))))))))))))');
       final res = await _storageRepository.storeFile(
           path: 'communities/profile', id: community.name, file: profileFile);
       res.fold((l) => showSnackBar(context, l.message),

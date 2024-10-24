@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final themeNotifierProvider =
-    StateNotifierProvider<ThemeNotifier, ThemeData>((ref) {
-  return ThemeNotifier();
+final themeNofifierProvider =
+    StateNotifierProvider<ThemeNofifier, ThemeData>((ref) {
+  return ThemeNofifier();
 });
 
 class Pallete {
@@ -29,7 +29,8 @@ class Pallete {
     drawerTheme: const DrawerThemeData(
       backgroundColor: drawerColor,
     ),
-    primaryColor: redColor, // will be used as alternative background color
+    primaryColor: redColor,
+    // backgroundColor: drawerColor,   // will be used as alternative background color
   );
 
   static var lightModeAppTheme = ThemeData.light().copyWith(
@@ -49,15 +50,11 @@ class Pallete {
   );
 }
 
-class ThemeNotifier extends StateNotifier<ThemeData> {
+class ThemeNofifier extends StateNotifier<ThemeData> {
   ThemeMode _mode;
-  ThemeNotifier({ThemeMode mode = ThemeMode.dark})
+  ThemeNofifier({ThemeMode mode = ThemeMode.dark})
       : _mode = mode,
-        super(
-          Pallete.darkModeAppTheme,
-        ) {
-    getTheme();
-  }
+        super(Pallete.darkModeAppTheme);
 
   ThemeMode get mode => _mode;
 
@@ -76,7 +73,6 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 
   void toggleTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     if (_mode == ThemeMode.dark) {
       _mode = ThemeMode.light;
       state = Pallete.lightModeAppTheme;
