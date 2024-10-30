@@ -22,6 +22,10 @@ final postControllerProvider =
   );
 });
 
+final userPostProvider = StreamProvider.family(
+    (ref, List<Community> communities) =>
+        ref.watch(postControllerProvider.notifier).fetchUserPost(communities));
+
 class PostController extends StateNotifier<bool> {
   final PostRepository _postRepository;
   final StorageRepository _storageRepository;
@@ -137,5 +141,12 @@ class PostController extends StateNotifier<bool> {
         Routemaster.of(context).pop();
       });
     });
+  }
+
+  Stream<List<Post>> fetchUserPost(List<Community> communities) {
+    if (communities.isNotEmpty) {
+      return _postRepository.fetchUserProfile(communities);
+    }
+    return Stream.value([]);
   }
 }
