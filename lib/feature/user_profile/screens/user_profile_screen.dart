@@ -54,7 +54,7 @@ class UserProfileScreen extends ConsumerWidget {
                               ),
                               child: const Text('Edit Profile'),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -66,11 +66,19 @@ class UserProfileScreen extends ConsumerWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'r/${data.name}',
-                                  style: const TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.bold),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'r/${data.name}',
+                                      style: const TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text((data.karma > 0)
+                                        ? '${data.karma} karma'
+                                        : 'karma'),
+                                  ],
                                 ),
                               ],
                             ),
