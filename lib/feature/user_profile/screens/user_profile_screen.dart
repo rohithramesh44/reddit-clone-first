@@ -99,9 +99,9 @@ class UserProfileScreen extends ConsumerWidget {
                       );
                     },
                     error: (error, stackTrace) {
-                      print('------------------------------------------------');
+                      // print('------------------------------------------------');
 
-                      print(error.toString());
+                      // print(error.toString());
 
                       return ErrorText(error: error.toString());
                     },

@@ -47,7 +47,7 @@ class AuthRepository {
           profilePic: userCredential.user!.photoURL ?? Constant.avatarDefault,
           banner: Constant.bannerDefault,
           karma: 0,
-          awards: [],
+          awards: ['awesomeAns', 'gold'],
           isAuthenticated: true,
         );
         await _users.doc(userCredential.user!.uid).set(userModel.toMap());

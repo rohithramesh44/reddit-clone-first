@@ -75,6 +75,7 @@ flutter:
     - assets/images/google.png
     - assets/images/reddit_logo.png
     - assets/images/loginEmote.png
+    - assets/images/awards/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -91,6 +92,7 @@ flutter:
     - family: myFlutterApp
       fonts:
         - asset: assets/font/MyFlutterApp.ttf
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
