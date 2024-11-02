@@ -47,13 +47,43 @@ class AuthRepository {
           profilePic: userCredential.user!.photoURL ?? Constant.avatarDefault,
           banner: Constant.bannerDefault,
           karma: 0,
-          awards: ['awesomeAns', 'gold'],
+          awards: [
+            'awesomeAns',
+            'gold',
+            'platinum',
+            'helpful',
+            'plusone',
+            'rocket',
+            'thankyou',
+            'til',
+          ],
           isAuthenticated: true,
         );
         await _users.doc(userCredential.user!.uid).set(userModel.toMap());
       } else {
         userModel = await getUserData(userCredential.user!.uid).first;
       }
+      return right(userModel);
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureEither<UserModel> signInAsGuest() async {
+    try {
+      var userCredential = await _auth.signInAnonymously();
+      UserModel userModel = UserModel(
+        uid: userCredential.user!.uid,
+        name: 'Guest',
+        profilePic: Constant.avatarDefault,
+        banner: Constant.bannerDefault,
+        karma: 0,
+        awards: [],
+        isAuthenticated: false,
+      );
+      await _users.doc(userCredential.user!.uid).set(userModel.toMap());
       return right(userModel);
     } on FirebaseException catch (e) {
       throw e.message!;
