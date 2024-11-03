@@ -39,7 +39,17 @@ class PostRepository {
   Stream<List<Post>> fetchUserPost(List<Community> communities) {
     return _posts
         .where('communityName', whereIn: communities.map((e) => e.name))
-        .orderBy('communityName', descending: true)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))
+            .toList());
+  }
+
+  Stream<List<Post>> fetchGuestPost() {
+    return _posts
+        .orderBy('createdAt', descending: true)
+        .limit(10)
         .snapshots()
         .map((event) => event.docs
             .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))

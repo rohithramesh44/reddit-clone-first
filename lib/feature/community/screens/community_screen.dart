@@ -25,6 +25,7 @@ class CommunityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(
           data: (community) => NestedScrollView(
@@ -65,37 +66,38 @@ class CommunityScreen extends ConsumerWidget {
                                       fontSize: 19,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                community.mods.contains(user.uid)
-                                    ? OutlinedButton(
-                                        onPressed: () {
-                                          navigateToModTools(context);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                if (!isGuest)
+                                  community.mods.contains(user.uid)
+                                      ? OutlinedButton(
+                                          onPressed: () {
+                                            navigateToModTools(context);
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 35),
                                           ),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 35),
-                                        ),
-                                        child: const Text('Mod Tools'),
-                                      )
-                                    : OutlinedButton(
-                                        onPressed: () => joinCommunity(
-                                            context, ref, community),
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                          child: const Text('Mod Tools'),
+                                        )
+                                      : OutlinedButton(
+                                          onPressed: () => joinCommunity(
+                                              context, ref, community),
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 35),
                                           ),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 35),
+                                          child: Text(community.member
+                                                  .contains(user.uid)
+                                              ? 'Leave'
+                                              : 'Join'),
                                         ),
-                                        child: Text(
-                                            community.member.contains(user.uid)
-                                                ? 'Leave'
-                                                : 'Join'),
-                                      ),
                               ],
                             ),
                             Padding(
@@ -120,8 +122,6 @@ class CommunityScreen extends ConsumerWidget {
                       );
                     },
                     error: (error, stackTrace) {
-                      print('------------------------------------------------');
-                      print(error.toString());
                       return ErrorText(error: error.toString());
                     },
                     loading: () => const Loader()),

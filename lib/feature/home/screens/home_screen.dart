@@ -36,6 +36,8 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final currentTheme = ref.watch(themeNofifierProvider);
     final user = ref.watch(userProvider)!;
+    final isGuest = !user
+        .isAuthenticated; //false value become true value so isGust is now true.
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -63,17 +65,19 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
       ),
       body: Constant.tabWidgets[_page],
       drawer: const CommunityDrawerList(),
-      endDrawer: const ProfileDrawer(),
-      bottomNavigationBar: CupertinoTabBar(
-        activeColor: currentTheme.iconTheme.color,
-        backgroundColor: currentTheme.scaffoldBackgroundColor,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: ''),
-        ],
-        onTap: onPageChanged,
-        currentIndex: _page,
-      ),
+      endDrawer: isGuest ? null : const ProfileDrawer(),
+      bottomNavigationBar: isGuest
+          ? null
+          : CupertinoTabBar(
+              activeColor: currentTheme.iconTheme.color,
+              backgroundColor: currentTheme.scaffoldBackgroundColor,
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+                BottomNavigationBarItem(icon: Icon(Icons.add), label: ''),
+              ],
+              onTap: onPageChanged,
+              currentIndex: _page,
+            ),
     );
   }
 }
