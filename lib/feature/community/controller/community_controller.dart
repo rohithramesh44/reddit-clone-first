@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -110,12 +111,17 @@ class CommunityController extends StateNotifier<bool> {
     required File? bannerFile,
     required BuildContext context,
     required Community community,
+    required Uint8List? profileWebFile,
+    required Uint8List? bannerWebFile,
   }) async {
     state = true;
     // communities/profile/profile.jpg
     if (profileFile != null) {
       final res = await _storageRepository.storeFile(
-          path: 'communities/profile', id: community.name, file: profileFile);
+          path: 'communities/profile',
+          id: community.name,
+          file: profileFile,
+          webFile: profileWebFile);
       res.fold((l) => showSnackBar(context, l.message),
           (r) => community = community.copyWith(avatar: r));
     }
@@ -123,7 +129,10 @@ class CommunityController extends StateNotifier<bool> {
     if (bannerFile != null) {
       // communities/banner/banner.jpg
       final res = await _storageRepository.storeFile(
-          path: 'communities/banner', id: community.name, file: bannerFile);
+          path: 'communities/banner',
+          id: community.name,
+          file: bannerFile,
+          webFile: bannerWebFile);
       //res working fine its a link for the photo uploaded
       res.fold((l) => showSnackBar(context, l.message), (r) {
         community = community.copyWith(banner: r);

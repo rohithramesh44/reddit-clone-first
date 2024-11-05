@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,21 +45,29 @@ class UserProfileController extends StateNotifier<bool> {
     required File? bannerFile,
     required BuildContext context,
     required String name,
+    required Uint8List? profileWebFile,
+    required Uint8List? bannerWebFile,
   }) async {
     state = true;
     UserModel user = _ref.read(userProvider)!;
     // communities/profile/profile.jpg
-    if (profileFile != null) {
+    if (profileFile != null || profileWebFile != null) {
       final res = await _storageRepository.storeFile(
-          path: 'users/profile', id: user.uid, file: profileFile);
+          path: 'users/profile',
+          id: user.uid,
+          file: profileFile,
+          webFile: profileWebFile);
       res.fold((l) => showSnackBar(context, l.message),
           (r) => user = user.copyWith(profilePic: r));
     }
 
-    if (bannerFile != null) {
+    if (bannerFile != null || bannerWebFile != null) {
       // communities/banner/banner.jpg
       final res = await _storageRepository.storeFile(
-          path: 'users/banner', id: user.name, file: bannerFile);
+          path: 'users/banner',
+          id: user.name,
+          file: bannerFile,
+          webFile: bannerWebFile);
       //res working fine its a link for the photo uploaded
       res.fold((l) => showSnackBar(context, l.message), (r) {
         user = user.copyWith(banner: r);
